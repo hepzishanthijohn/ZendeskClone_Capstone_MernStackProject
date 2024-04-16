@@ -17,10 +17,10 @@ app.use(express.json());
 
 const cors = require('cors');
 app.use(cors());
-app.use('/admin',adminRoutes)
-app.use('/student',studentRoutes);
-app.use('/mentor',mentorRoutes);
-app.use('/class',classRoutes);
+app.use('/Admin',adminRoutes)
+app.use('/Student',studentRoutes);
+app.use('/Mentor',mentorRoutes);
+app.use('/sclass',classRoutes);
 app.use('/complain',complainRoutes);
 app.use('/notice',noticeRoutes)
 
