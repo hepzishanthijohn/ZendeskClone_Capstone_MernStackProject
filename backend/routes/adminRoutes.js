@@ -18,6 +18,7 @@ router.post("/register", async (req, res) => {
       name,
       email,
       password,
+      institutionName
     });
 
     await Admin.save();
@@ -73,6 +74,7 @@ router.post("/login", async (req, res) => {
       Admin: {
         name: Admin.name,
         id: Admin._id,
+        institution_Name:Admin.institutionName,
         role: Admin.role,
       },
     };
