@@ -5,7 +5,7 @@ const Student = require('../models/StudentSchema.js');
 const Course = require('../models/CourseSchema.js');
 
 
-router.post('/studentRegister',async (req, res) => {
+router.post('/StudentReg',async (req, res) => {
     try {
         const salt = await bcrypt.genSalt(10);
         const hashedPass = await bcrypt.hash(req.body.password, salt);
