@@ -1,7 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const admin = require("../models/AdminSchema");
+const Admin = require("../models/AdminSchema");
 const Sclass = require('../models/SclassSchema.js');
 const Student = require('../models/StudentSchema.js');
 const Mentor = require('../models/MentorSchema.js');
@@ -39,9 +39,9 @@ router.post("/AdminReg", async (req, res) => {
 
 router.get("/Admin/:id", async (req, res) => {
   try {
-      let Admin = await admin.findById(req.params.id);
-      if (Admin) {
-          Admin.password = undefined;
+      let admin = await Admin.findById(req.params.id);
+      if (admin) {
+          admin.password = undefined;
           res.send(Admin);
       }
       else {
@@ -56,8 +56,8 @@ router.get("/Admin/:id", async (req, res) => {
 //get all authenticated users
 router.get('/', async (req, res) => {
   try {
-  const Admin = await admin.find();
-    res.json(Admin);
+  const admin = await Admin.find();
+    res.json(admin);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
