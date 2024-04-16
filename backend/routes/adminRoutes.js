@@ -2,10 +2,17 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const admin = require("../models/AdminSchema");
+const Sclass = require('../models/SclassSchema.js');
+const Student = require('../models/StudentSchema.js');
+const Mentor = require('../models/MentorSchema.js');
+const Course = require('../models/CourseSchema.js');
+const Notice = require('../models/NoticeSchema.js');
+const Complain = require('../models/ComplainSchema.js');
+
 const router = express.Router();
 
 // POST /auth/register
-router.post("/register", async (req, res) => {
+router.post("/AdminReg", async (req, res) => {
   const { name, email, password,institutionName } = req.body;
 
   try {
@@ -41,6 +48,23 @@ router.post("/register", async (req, res) => {
     res.status(500).send("Server error");
   }
 });
+
+router.get("/Admin/:id", async (req, res) => {
+  try {
+      let Admin = await admin.findById(req.params.id);
+      if (Admin) {
+          Admin.password = undefined;
+          res.send(Admin);
+      }
+      else {
+          res.send({ message: "No admin found" });
+      }
+  } catch (err) {
+      res.status(500).json(err);
+  }
+})
+
+
 //get all authenticated users
 router.get('/', async (req, res) => {
   try {
@@ -52,7 +76,7 @@ router.get('/', async (req, res) => {
 });
 
 // POST /auth/login
-router.post("/login", async (req, res) => {
+router.post("/AdminLogin", async (req, res) => {
   const {email, password} = req.body;
   const name =req.body;
 
