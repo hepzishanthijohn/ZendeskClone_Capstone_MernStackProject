@@ -19,7 +19,7 @@ router.post("/AdminReg", async (req, res) => {
       });
 
       const existingAdminByEmail = await Admin.findOne({ email: req.body.email });
-      const existingSchool = await Admin.findOne({ schoolName: req.body.schoolName });
+      const existingSchool = await Admin.findOne({ institutionName: req.body.institutionName });
 
       if (existingAdminByEmail) {
           res.send({ message: 'Email already exists' });
