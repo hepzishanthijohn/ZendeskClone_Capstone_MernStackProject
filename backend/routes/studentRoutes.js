@@ -1,8 +1,9 @@
 const bcrypt = require('bcryptjs');
 const express = require("express");
+const router = express.Router();
 const Student = require('../models/StudentSchema.js');
 const Course = require('../models/CourseSchema.js');
-const router = express.Router();
+
 
 router.post('/studentRegister',async (req, res) => {
     try {
@@ -25,7 +26,7 @@ router.post('/studentRegister',async (req, res) => {
         else {
             const student = new Student({
                 ...req.body,
-                school: req.body.adminID,
+                institution: req.body.adminID,
                 password: hashedPass
             });
 
@@ -45,7 +46,7 @@ router.post('/StudentLogin', async (req, res) => {
         if (student) {
             const validated = await bcrypt.compare(req.body.password, student.password);
             if (validated) {
-                student = await student.populate("school", "schoolName")
+                student = await student.populate("institution", "institutionName")
                 student = await student.populate("sclassName", "sclassName")
                 student.password = undefined;
                 student.examResult = undefined;
@@ -66,7 +67,7 @@ router.post('/StudentLogin', async (req, res) => {
 
 router.get("/Students/:id", async (req, res) => {
     try {
-        let students = await Student.find({ school: req.params.id }).populate("sclassName", "sclassName");
+        let students = await Student.find({ institution: req.params.id }).populate("sclassName", "sclassName");
         if (students.length > 0) {
             let modifiedStudents = students.map((student) => {
                 return { ...student._doc, password: undefined };
@@ -84,7 +85,7 @@ router.get("/Students/:id", async (req, res) => {
 router.get("/Student/:id", async (req, res) => {
     try {
         let student = await Student.findById(req.params.id)
-            .populate("school", "schoolName")
+            .populate("institution", "institutionName")
             .populate("sclassName", "sclassName")
             .populate("examResult.courseName", "courseName")
             .populate("attendance.courseName", "courseName sessions");
@@ -111,7 +112,7 @@ router.delete("/Student/:id", async (req, res) => {
 
 router.delete("/Students/:id", async (req, res) => {
     try {
-        const result = await Student.deleteMany({ school: req.params.id })
+        const result = await Student.deleteMany({ institution: req.params.id })
         if (result.deletedCount === 0) {
             res.send({ message: "No students found to delete" })
         } else {
@@ -235,11 +236,11 @@ router.put('/RemoveAllStudentsSubAtten/:id', async (req, res) => {
 });
 
 router.put('/RemoveAllStudentsAtten/:id', async (req, res) => {
-    const schoolId = req.params.id
+    const institutionId = req.params.id
 
     try {
         const result = await Student.updateMany(
-            { school: schoolId },
+            { institution: institutionId },
             { $set: { attendance: [] } }
         );
 
