@@ -1,6 +1,7 @@
 const express = require('express');
 const connectDB = require('./db');
 const adminRoutes = require ('./routes/adminRoutes');
+const studentRoutes = require ('./routes/studentRoutes');
 
 
 
@@ -14,6 +15,8 @@ app.use(express.json());
 const cors = require('cors');
 app.use(cors());
 app.use('/admin',adminRoutes)
+app.use('/student',studentRoutes);
+
 
 
 const PORT = process.env.PORT || 5000;
